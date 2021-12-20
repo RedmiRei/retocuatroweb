@@ -60,8 +60,12 @@ public class OrderController {
         return orderService.getBySalesManIdAndStatus(id, status);
     }
 
-    @GetMapping("/date/{registerDay}/{id}")
+    /*@GetMapping("/date/{registerDay}/{id}")
     public List<Order> getByRegisterDayAndSalesManId(@PathVariable("registerDay")String  registerDay,@PathVariable("id") Integer id){
         return orderService.getByRegisterDayAndSalesManId(registerDay, id);
+    }*/
+    @GetMapping("/date/{date}/{id}")
+    public List<Order> getOrdersSalesManByDate(@PathVariable("date") String dateStr, @PathVariable("id") Integer id){
+        return orderService.getOrdersSalesManByDate(dateStr, id);
     }
 }
