@@ -10,37 +10,61 @@ import java.util.Optional;
 
 /**
  * Class User Service
+ * @author rei
  */
 @Service
 
 public class UserService {
     /**
-     *
+     * Objeto de clase UserRepository.
      */
     @Autowired
     private UserRepository userRepository;
 
     /**
-     * Get = List of All Users
-     * @return
+     * Metodo Get para obtener todos los datos de los usuarios.
+     * @return Lista de usuarios.
      */
     public List<User> getAll() {
         return userRepository.getAll();
     }
 
     /**
-     * Get = User by its id
-     * @param id
-     * @return
+     * Metodo que obtiene usuario buscado por id.
+     * @param id parametro.
+     * @return usuario.
      */
     public Optional<User> getUser(int id) {
         return userRepository.getUser(id);
     }
 
     /**
-     * This method saves a new user
-     * @param user
-     * @return
+     * Metodo que valida email.
+     * @param email recibe el correo.
+     * @return true o false si existe o no el usuario.
+     */
+    public boolean emailExists(String email) {
+        return userRepository.emailExists(email);
+    }
+
+    /**
+     * Metodo GET para realizar consulta de validacion.
+     * @param email recibe el correo.
+     * @param password recibe la contrasena.
+     * @return datos del usuario no nulos.
+     */
+    public User authenticateUser(String email, String password){
+        Optional<User> user = userRepository.authenticateUser(email, password);
+        if (user.isEmpty()){
+            return new User();
+        }
+        return user.get();
+    }
+
+    /**
+     * Metodo Post para el ingreso de datos para el usuario.
+     * @param user recibe datos.
+     * @return datos del usuario ingresado.
      */
     public User save(User user) {
         if (user.getId() == null) {
@@ -60,9 +84,9 @@ public class UserService {
     }
 
     /**
-     * This method updates a user
-     * @param user
-     * @return
+     * Metodo que sirve para actualizar registros.
+     * @param user Parametro que permite obtener valores del usuario.
+     * @return datos actualizados.
      */
     public User update(User user) {
         if (user.getId() != null) {
@@ -110,18 +134,9 @@ public class UserService {
     }
 
     /**
-     * This method checks if an email exists
-     * @param email
-     * @return
-     */
-    public boolean emailExists(String email) {
-        return userRepository.emailExists(email);
-    }
-
-    /**
-     * This method deletes a User
-     * @param userId
-     * @return
+     * Metodo que permite eliminar registros.
+     * @param userId parametro.
+     * @return true o false.
      */
     public boolean delete(int userId) {
         Boolean userBoolean = getUser(userId).map(user -> {
@@ -131,17 +146,4 @@ public class UserService {
         return userBoolean;
     }
 
-    /**
-     * This method verifies if a user is registered by its email and password
-     * @param email
-     * @param password
-     * @return
-     */
-    public User authenticateUser(String email, String password){
-        Optional<User> user = userRepository.authenticateUser(email, password);
-        if (user.isEmpty()){
-            return new User();
-        }
-        return user.get();
-    }
 }
